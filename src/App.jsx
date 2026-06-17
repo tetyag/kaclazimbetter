@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import QuestionsPage from "./pages/QuestionsPage.jsx";
 
 /* ================================================================== */
 /*  kaçlazım?  —  Yeditepe Tıp · Dönem II final hedefi hesaplayıcı     */
@@ -82,6 +83,8 @@ function Logo() {
 
 export default function App() {
   const [tab, setTab] = useState("hedef");
+  const [page, setPage] = useState("calculator");
+  const [selectedCommittee, setSelectedCommittee] = useState(null);
   const [scores, setScores] = useState(["", "", "", "", ""]);
   const [srp, setSrp] = useState(3);
 
@@ -114,6 +117,9 @@ export default function App() {
   };
 
   const cardStyle = { background: C.surface, border: `1px solid ${C.borderSoft}` };
+  if (page === "questions") {
+  return <QuestionsPage />;
+}
 
   return (
     <div
@@ -134,16 +140,94 @@ export default function App() {
       `}</style>
 
       <div className="mx-auto max-w-3xl px-4 pb-24 pt-6 sm:pt-9">
+        {page === "questions" && (
+  <div className="mb-8">
+    <h1
+      className="mb-6 text-3xl font-extrabold"
+      style={{ color: C.gold }}
+    >
+      Çıkmış Sorular
+    </h1>
+
+    {!selectedCommittee ? (
+      <div className="grid grid-cols-2 gap-3">
+        {[1, 2, 3, 4, 5].map((n) => (
+          <button
+            key={n}
+            onClick={() => setSelectedCommittee(n)}
+            className="rounded-xl p-5 text-left font-semibold"
+            style={{
+              background: C.surface,
+              border: `1px solid ${C.border}`,
+            }}
+          >
+            Komite {n}
+          </button>
+        ))}
+      </div>
+    ) : (
+      <div>
+        <button
+          onClick={() => setSelectedCommittee(null)}
+          className="mb-4 rounded-lg px-3 py-2"
+          style={{
+            background: C.surface2,
+            color: C.text,
+          }}
+        >
+          ← Geri
+        </button>
+
+        <h2 className="mb-4 text-xl font-bold">
+          Komite {selectedCommittee}
+        </h2>
+
+        <div className="grid grid-cols-2 gap-3">
+          {[2025, 2024, 2023].map((year) => (
+            <button
+              key={year}
+              className="rounded-xl p-5 text-left font-semibold"
+              style={{
+                background: C.surface,
+                border: `1px solid ${C.border}`,
+              }}
+            >
+              {year} Çıkmışı
+            </button>
+          ))}
+        </div>
+      </div>
+    )}
+  </div>
+)}
         {/* Top bar */}
         <header className="mb-9 flex items-center justify-between">
-          <Logo />
-          <span
-            className="rounded-full px-3 py-1 text-[11px] font-medium"
-            style={{ background: C.surface2, color: C.textMute, border: `1px solid ${C.borderSoft}` }}
-          >
-            Yeditepe Tıp
-          </span>
-        </header>
+  <Logo />
+
+  <div className="flex items-center gap-2">
+    <button
+      onClick={() => setPage("questions")}
+      className="rounded-full px-3 py-1 text-[11px] font-semibold"
+      style={{
+        background: C.gold,
+        color: C.bg,
+      }}
+    >
+      Çıkmış Sorular
+    </button>
+
+    <span
+      className="rounded-full px-3 py-1 text-[11px] font-medium"
+      style={{
+        background: C.surface2,
+        color: C.textMute,
+        border: `1px solid ${C.borderSoft}`,
+      }}
+    >
+      Yeditepe Tıp
+    </span>
+  </div>
+</header>
 
         {/* Hero */}
         <div className="mb-7">
