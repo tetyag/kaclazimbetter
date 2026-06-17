@@ -45,7 +45,7 @@ const COURSES = [
 ].map((c) => ({ ...c, total: c.counts.reduce((a, b) => a + b, 0) }));
 
 const TOTAL_Q = 200;
-const PASS = 60;
+const PASS = 59.5;
 const W_K = 0.582;
 const W_F = 0.388;
 const BARAJ = 50;
