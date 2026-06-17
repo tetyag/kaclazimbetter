@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import QuestionsPage from "./pages/QuestionsPage.jsx";
+import MemoryWall from "./pages/MemoryWall";
 
 /* ================================================================== */
 /*  kaçlazım?  —  Yeditepe Tıp · Dönem II final hedefi hesaplayıcı     */
@@ -429,6 +430,7 @@ export default function App() {
           <FinalPlanner suggestedTarget={status === "normal" ? Math.ceil(fReq) : null} cardStyle={cardStyle} />
         )}
 
+        <MemoryWall />
         <footer className="mt-10 text-center text-[11px]" style={{ color: C.textMute }}>
           kaçlazım? · tahmin aracıdır, kesin sonuç fakülte hesabına göredir
         </footer>
