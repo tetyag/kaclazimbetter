@@ -31,6 +31,18 @@ export default function QuestionsPage() {
         <h1 className="mb-2 text-3xl font-extrabold" style={{ color: "#F6B83E" }}>
           Çıkmış Sorular
         </h1>
+        <button
+  onClick={() => window.location.href = "/"}
+  className="mb-6 rounded-xl px-4 py-2 font-semibold"
+  style={{
+    background: "#F6B83E",
+    color: "#081428",
+    border: "none",
+    cursor: "pointer"
+  }}
+>
+  ← Ana Sayfaya Dön
+</button>
 
         <p className="mb-6 text-sm" style={{ color: "#94ABCF" }}>
           Şimdilik 25-26 PDF çıkmışları. Eksik komiteler daha sonra eklenecek.
