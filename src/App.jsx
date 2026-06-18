@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import QuestionsPage from "./pages/QuestionsPage.jsx";
 import MemoryWall from "./pages/MemoryWall";
+import { ref, onValue, runTransaction } from "firebase/database";
+import { db } from "./firebase";
 
 /* ================================================================== */
 /*  kaçlazım?  —  Yeditepe Tıp · Dönem II final hedefi hesaplayıcı     */
@@ -85,6 +87,26 @@ function Logo() {
 export default function App() {
   const [tab, setTab] = useState("hedef");
   const [page, setPage] = useState("calculator");
+  const [stats, setStats] = useState({
+  visits: 0,
+  calculations: 0,
+  requiredFinalSum: 0,
+});
+useEffect(() => {
+  const statsRef = ref(db, "stats");
+
+  onValue(statsRef, (snapshot) => {
+    const data = snapshot.val();
+
+    if (data) {
+      setStats(data);
+    }
+  });
+
+  runTransaction(ref(db, "stats/visits"), (current) => {
+    return (current || 0) + 1;
+  });
+}, []);
   const [selectedCommittee, setSelectedCommittee] = useState(null);
   const [scores, setScores] = useState(["", "", "", "", ""]);
   const [srp, setSrp] = useState(3);
@@ -206,16 +228,7 @@ export default function App() {
   <Logo />
 
   <div className="flex items-center gap-2">
-    <button
-      onClick={() => setPage("questions")}
-      className="rounded-full px-3 py-1 text-[11px] font-semibold"
-      style={{
-        background: C.gold,
-        color: C.bg,
-      }}
-    >
-      Çıkmış Sorular
-    </button>
+    
 
     <span
       className="rounded-full px-3 py-1 text-[11px] font-medium"
@@ -243,7 +256,7 @@ export default function App() {
 
         {/* Tabs */}
         <div
-          className="mb-6 inline-flex rounded-xl p-1"
+          className="mb-6 flex items-center justify-between"
           style={{ background: C.surface, border: `1px solid ${C.borderSoft}` }}
         >
           {[["hedef", "Hedef hesapla"], ["plan", "Final soru planı"]].map(([id, label]) => (
@@ -260,8 +273,18 @@ export default function App() {
               {label}
             </button>
           ))}
-        </div>
-
+  
+<button
+  onClick={() => setPage("questions")}
+  className="rounded-xl px-4 py-2 text-sm font-bold"
+  style={{
+    background: C.gold,
+    color: C.bg,
+  }}
+>
+  📚 Çıkmış Sorular
+</button>
+</div>
         {tab === "hedef" && (
           <div className="space-y-5">
             {/* Girdi */}
@@ -429,7 +452,16 @@ export default function App() {
         {tab === "plan" && (
           <FinalPlanner suggestedTarget={status === "normal" ? Math.ceil(fReq) : null} cardStyle={cardStyle} />
         )}
+<section
+  className="mt-10 grid grid-cols-1 gap-3 sm:grid-cols-3"
+>
+  <div className="rounded-2xl p-4" style={{ background: C.surface, border: `1px solid ${C.borderSoft}` }}>
+    <div className="text-2xl">👀</div>
+    <div className="mt-2 text-2xl font-extrabold">{stats.visits || 0}</div>
+    <div className="text-xs" style={{ color: C.textMute }}>Toplam ziyaret</div>
+  </div>
 
+</section>
         <MemoryWall />
         <footer className="mt-10 text-center text-[11px]" style={{ color: C.textMute }}>
           kaçlazım? · tahmin aracıdır, kesin sonuç fakülte hesabına göredir
