@@ -45,7 +45,7 @@ export default function MemoryWall() {
       style={{ background: "#0F2647", border: "1px solid #1A3258" }}
     >
       <h2 className="text-xl font-extrabold" style={{ color: "#F6B83E" }}>
-        Anı Defteri
+        Sohbet 
       </h2>
 
       <p className="mt-1 mb-4 text-sm" style={{ color: "#94ABCF" }}>
